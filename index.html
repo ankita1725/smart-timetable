@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Timetable</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead-text">
+      <h1>My Timetable</h1>
+      <p class="subhead">Add your own classes, at your own days and times — no fixed subject list.</p>
+    </div>
+  </header>
+
+  <!-- ============ Add / Edit subject form ============ -->
+  <section class="panel">
+    <h2 id="form-heading" class="panel-heading">Add a class</h2>
+    <form id="entry-form" class="entry-form">
+      <input type="hidden" id="entry-id" value="">
+
+      <label class="field">
+        <span>Subject</span>
+        <input type="text" id="subject" placeholder="e.g. Data Structures" required>
+      </label>
+
+      <label class="field">
+        <span>Teacher <em>(optional)</em></span>
+        <input type="text" id="teacher" placeholder="e.g. Mr. Sharma">
+      </label>
+
+      <label class="field">
+        <span>Day</span>
+        <select id="day" required>
+          <option value="" disabled selected>Choose a day</option>
+          <option>Monday</option>
+          <option>Tuesday</option>
+          <option>Wednesday</option>
+          <option>Thursday</option>
+          <option>Friday</option>
+          <option>Saturday</option>
+          <option>Sunday</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Start time</span>
+        <input type="time" id="start_time" required>
+      </label>
+
+      <label class="field">
+        <span>End time</span>
+        <input type="time" id="end_time" required>
+      </label>
+
+      <label class="field field-wide">
+        <span>Notes <em>(optional)</em></span>
+        <input type="text" id="notes" placeholder="e.g. Room 204">
+      </label>
+
+      <div class="form-actions">
+        <button type="submit" id="submit-btn" class="btn-primary">Add class</button>
+        <button type="button" id="cancel-edit-btn" class="btn-text" hidden>Cancel edit</button>
+      </div>
+    </form>
+
+    <p id="form-error" class="form-error" hidden></p>
+  </section>
+
+  <!-- ============ Timetable list ============ -->
+  <section class="panel">
+    <h2 class="panel-heading">Your classes</h2>
+    <div id="entries-wrap" class="grid-wrap">
+      <table class="grid">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Time</th>
+            <th>Subject</th>
+            <th>Teacher</th>
+            <th>Notes</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="entries-body"></tbody>
+      </table>
+      <p id="empty-note" class="empty-note" hidden>No classes added yet — use the form above to add your first one.</p>
+    </div>
+  </section>
+
+  <!-- ============ Optional: old auto-generator, tucked away ============ -->
+  <section class="panel panel-muted">
+    <button id="toggle-generator" class="toggle-generator" type="button" aria-expanded="false">
+      Auto-generate a sample timetable (uses sample data in data.py) ▾
+    </button>
+    <div id="generator-body" hidden>
+      <p class="generator-note">
+        This is unrelated to the classes above. It runs the backtracking scheduler
+        against the sample teachers/rooms/sections in <code>data.py</code> — handy as a
+        demo, or for an admin drafting a whole section's timetable from scratch.
+      </p>
+      <button id="generate-btn" class="btn-generate">Run sample generator</button>
+      <div id="status-line" class="status-line"></div>
+      <nav id="tabs" class="tabs" hidden></nav>
+      <div id="gen-grid-wrap" class="grid-wrap" hidden>
+        <table class="grid">
+          <thead>
+            <tr>
+              <th>Slot</th>
+              <th>Subject</th>
+              <th>Teacher</th>
+              <th>Room</th>
+            </tr>
+          </thead>
+          <tbody id="gen-grid-body"></tbody>
+        </table>
+      </div>
+      <section id="failure" class="failure" hidden>
+        <h2>No valid timetable found</h2>
+        <p>The sample teachers/rooms/availability in <code>data.py</code> can't fit every
+           required class without a conflict.</p>
+      </section>
+    </div>
+  </section>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
